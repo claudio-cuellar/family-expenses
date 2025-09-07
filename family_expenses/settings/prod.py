@@ -9,3 +9,5 @@ ALLOWED_HOSTS = ['claudio-cuellar.com', 'www.claudio-cuellar.com']
 # SECURE_SSL_REDIRECT = True
 # SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SECURE = True
+FORCE_SCRIPT_NAME = "/api"
+USE_X_FORWARDED_HOST = True
