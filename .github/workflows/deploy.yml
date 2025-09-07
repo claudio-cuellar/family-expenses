@@ -70,7 +70,10 @@ jobs:
               User=ubuntu
               Group=www-data
               WorkingDirectory=/home/ubuntu/api
-              ExecStart=/home/ubuntu/api/venv/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/api/gunicorn.sock family_expenses.wsgi:application
+              ExecStart=/home/ubuntu/api/venv/bin/gunicorn \
+              --access-logfile /var/www/gunicorn/logs/access.log \
+              --error-logfile /var/www/gunicorn/logs/error.log \
+              --workers 3 --bind unix:/home/ubuntu/api/gunicorn.sock family_expenses.wsgi:application
 
               [Install]
               WantedBy=multi-user.target" | sudo tee /etc/systemd/system/gunicorn.service
