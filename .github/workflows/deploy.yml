@@ -54,6 +54,9 @@ jobs:
             pip install --upgrade pip
             pip install -r requirements.txt
 
+            # Set DJANGO_SETTINGS_MODULE for production
+            export DJANGO_SETTINGS_MODULE=family_expenses.settings.prod
+
             # Apply DB migrations
             python3 manage.py migrate --noinput
 
