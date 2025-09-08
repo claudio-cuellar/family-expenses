@@ -6,3 +6,9 @@ class ContactCreateView(generics.CreateAPIView):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
     permission_classes = (permissions.AllowAny,)
+
+
+class ContactListView(generics.ListAPIView):
+    queryset = Contact.objects.all()
+    serializer_class = ContactSerializer
+    permission_classes = (permissions.AllowAny,)
