@@ -64,18 +64,20 @@ jobs:
             python3 manage.py collectstatic --noinput
 
             # Setup/Update Gunicorn systemd service
-            echo "[Unit]
+            echo "Setting up Gunicorn..."
+            sudo bash -c 'cat > /etc/systemd/system/gunicorn.service <<EOF
+            [Unit]
             Description=gunicorn daemon
             After=network.target
 
             [Service]
             User=ubuntu
             Group=www-data
-            WorkingDirectory=/home/ubuntu/api
-            ExecStart=/home/ubuntu/api/venv/bin/gunicorn \\
-            --access-logfile /var/www/gunicorn/logs/access.log \\
-            --error-logfile /var/www/gunicorn/logs/error.log \\
-            --workers 3 --bind unix:/home/ubuntu/api/gunicorn.sock family_expenses.wsgi:application
+            WorkingDirectory=/home/ubuntu/family_expenses
+            Environment="DATABASE_URL=${{ secrets.DATABASE_URL }}"
+            ExecStart=/home/ubuntu/family_expenses/venv/bin/gunicorn \
+                      --access-logfile - \
+                      --workers 3 --bind unix:/home/ubuntu/api/gunicorn.sock family_expenses.wsgi:application
 
             [Install]
             WantedBy=multi-user.target" | sudo tee /etc/systemd/system/gunicorn.service
