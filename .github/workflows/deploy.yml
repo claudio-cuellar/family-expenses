@@ -32,6 +32,30 @@ jobs:
           pip install -r requirements.txt
           python3 manage.py migrate
           python3 manage.py collectstatic --noinput
+          
+          echo "Setting up Gunicorn..."
+          sudo bash -c 'cat > /etc/systemd/system/gunicorn.service <<EOG
+          [Unit]
+          Description=gunicorn daemon
+          After=network.target
+          [Service]
+          User=ubuntu
+          Group=www-data
+          WorkingDirectory=/home/ubuntu/family_expenses
+          ExecStart=/home/ubuntu/family_expenses/venv/bin/gunicorn \
+                    --access-logfile - \
+                    --workers 3 \
+                    --bind unix:/home/ubuntu/family_expenses/gunicorn.sock \
+                    family_expenses.wsgi:application
+          [Install]
+          WantedBy=multi-user.target
+          EOG'
+
+          echo "Restarting services..."
+          sudo systemctl daemon-reload
+          sudo systemctl restart gunicorn
+          sudo systemctl enable gunicorn
+          sudo systemctl reload nginx
           deactivate
           EOF
 
