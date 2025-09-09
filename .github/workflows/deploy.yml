@@ -21,7 +21,7 @@ jobs:
         run: |
           echo "Deploying to EC2..."
           ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-          cd /home/ubuntu/family_expenses
+          cd /home/ubuntu/api/
           git checkout main
           git fetch origin
           git reset --hard origin/main
@@ -45,8 +45,8 @@ jobs:
           [Service]
           User=ubuntu
           Group=www-data
-          WorkingDirectory=/home/ubuntu/family_expenses
-          ExecStart=/home/ubuntu/family_expenses/venv/bin/gunicorn \
+          WorkingDirectory=/home/ubuntu/api/
+          ExecStart=/home/ubuntu/api/venv/bin/gunicorn \
                     --access-logfile - \
                     --workers 3 \
                       --workers 3 --bind unix:/home/ubuntu/api/gunicorn.sock family_expenses.wsgi:application
