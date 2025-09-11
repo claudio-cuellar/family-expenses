@@ -18,7 +18,7 @@ class CategorySerializer(TranslatableModelSerializer):
 
     class Meta:
         model = Category
-        fields = ['id', 'translations', 'parent', 'subcategories']
+        fields = ['id', 'translations', 'parent', 'subcategories', 'icon']
 
     def create(self, validated_data):
         """

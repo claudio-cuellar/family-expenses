@@ -9,6 +9,7 @@ class Category(TranslatableModel):
     translations = TranslatedFields(
         name = models.CharField(max_length=100, unique=True)
     )
+    icon = models.CharField(max_length=50, blank=True)
     parent = models.ForeignKey(
         'self',
         on_delete=models.CASCADE,
