@@ -3,15 +3,22 @@ from parler_rest.serializers import TranslatableModelSerializer
 from parler_rest.fields import TranslatedFieldsField
 from .models import Category, Transaction
 
+class RecursiveField(serializers.Serializer):
+    def to_representation(self, value):
+        serializer = self.parent.parent.__class__(value, context=self.context)
+        return serializer.data
+
+
 class CategorySerializer(TranslatableModelSerializer):
     """
     Serializer for the Category model.
     """
     translations = TranslatedFieldsField(shared_model=Category)
+    subcategories = RecursiveField(many=True, read_only=True)
 
     class Meta:
         model = Category
-        fields = ['id', 'translations']
+        fields = ['id', 'translations', 'parent', 'subcategories']
 
     def create(self, validated_data):
         """

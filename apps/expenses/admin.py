@@ -7,9 +7,9 @@ class CategoryAdmin(TranslatableAdmin):
     """
     Admin configuration for the Category model.
     """
-    list_display = ('name', 'user')
+    list_display = ('name', 'user', 'parent')
     search_fields = ('translations__name',)
-    list_filter = ('user',)
+    list_filter = ('user', 'parent')
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
