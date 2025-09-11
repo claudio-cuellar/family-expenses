@@ -10,10 +10,15 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """
-        This view should return a list of all the categories
-        for the currently authenticated user.
+        This view should return a list of all the top-level categories
+        for the currently authenticated user and default categories.
+        Subcategories are available under the 'subcategories' field.
         """
-        return Category.objects.filter(user=self.request.user)
+        from django.db.models import Q
+        return Category.objects.filter(
+            Q(user=self.request.user) | Q(user__isnull=True, is_default=True),
+            parent__isnull=True
+        )
 
 
 class TransactionViewSet(viewsets.ModelViewSet):
