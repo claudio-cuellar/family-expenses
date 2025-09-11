@@ -1,11 +1,14 @@
 from django.db import models
 from django.conf import settings
+from parler.models import TranslatableModel, TranslatedFields
 
-class Category(models.Model):
+class Category(TranslatableModel):
     """
     Represents a category for a transaction, e.g., "Groceries", "Salary".
     """
-    name = models.CharField(max_length=100, unique=True)
+    translations = TranslatedFields(
+        name = models.CharField(max_length=100, unique=True)
+    )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -13,7 +16,7 @@ class Category(models.Model):
     )
 
     def __str__(self):
-        return self.name
+        return self.safe_translation_getter('name', any_language=True)
 
 class Transaction(models.Model):
     """

@@ -1,13 +1,17 @@
 from rest_framework import serializers
+from parler_rest.serializers import TranslatableModelSerializer
+from parler_rest.fields import TranslatedFieldsField
 from .models import Category, Transaction
 
-class CategorySerializer(serializers.ModelSerializer):
+class CategorySerializer(TranslatableModelSerializer):
     """
     Serializer for the Category model.
     """
+    translations = TranslatedFieldsField(shared_model=Category)
+
     class Meta:
         model = Category
-        fields = ['id', 'name']
+        fields = ['id', 'translations']
 
     def create(self, validated_data):
         """
