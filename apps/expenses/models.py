@@ -19,7 +19,13 @@ class Category(TranslatableModel):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='categories'
+        related_name='categories',
+        null=True,
+        blank=True
+    )
+    is_default = models.BooleanField(
+        default=False,
+        help_text='Default categories available to all users'
     )
 
     def __str__(self):
