@@ -8,6 +8,7 @@ urlpatterns = [
     path('users/', include('apps.users.urls')),
     path('contacts/', include('apps.contacts.urls')),
     path("expenses/", include("apps.expenses.urls")),
+    path('reports/', include('apps.reports.urls')),
 ]
 
 if settings.DEBUG:
