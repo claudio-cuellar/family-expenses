@@ -33,6 +33,7 @@ class TransactionSerializer(serializers.ModelSerializer):
     """
     Serializer for the Transaction model.
     """
+    category_name = serializers.SerializerMethodField()
     category = serializers.PrimaryKeyRelatedField(
         queryset=Category.objects.all(),
         required=False,
@@ -42,8 +43,24 @@ class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
         fields = [
-            'id', 'transaction_type', 'amount', 'category', 'date', 'notes'
+            'id', 'transaction_type', 'amount', 'category', 'category_name', 'date', 'notes'
         ]
+
+    def get_category_name(self, obj):
+        if not obj.category:
+            return None
+
+        def get_full_name(lang_code):
+            name = obj.category.safe_translation_getter('name', language_code=lang_code)
+            if obj.category.parent:
+                parent_name = obj.category.parent.safe_translation_getter('name', language_code=lang_code)
+                return f'{parent_name} - {name}'
+            return name
+
+        return {
+            'en': get_full_name('en'),
+            'es': get_full_name('es')
+        }
 
     def create(self, validated_data):
         """
