@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from parler_rest.serializers import TranslatableModelSerializer
 from parler_rest.fields import TranslatedFieldsField
+from django.db.models import Q
 from .models import Category, Transaction
+
 
 class RecursiveField(serializers.Serializer):
     def to_representation(self, value):
@@ -60,5 +62,5 @@ class TransactionSerializer(serializers.ModelSerializer):
             request = self.context.get('request')
             if request and hasattr(request, 'user'):
                 self.fields['category'].queryset = Category.objects.filter(
-                    user=request.user
+                    Q(user=request.user) | Q(is_default=True)
                 )
