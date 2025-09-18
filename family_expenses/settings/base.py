@@ -20,26 +20,6 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
 
 # Application definition
 
-INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "rest_framework",
-    "rest_framework.authtoken",
-    "django_filters",
-    "corsheaders",
-    "parler",
-    "parler_rest",
-    "apps.users",
-    "apps.contacts",
-    "apps.expenses",
-    "apps.budgets",
-    "apps.reports",
-]
-
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=["http://localhost:4200"])
 
 MIDDLEWARE = [

@@ -1,6 +1,25 @@
 from .base import *
 import dj_database_url
 
+INSTALLED_APPS = [
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "django_filters",
+    "corsheaders",
+    "parler",
+    "parler_rest",
+    "apps.users",
+    "apps.contacts",
+    "apps.expenses",
+    "apps.budgets",
+    "apps.reports",
+]
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 DATABASES = {
