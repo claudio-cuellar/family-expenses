@@ -15,6 +15,12 @@ class User(AbstractUser):
         choices=FamilyRole.choices,
         default=FamilyRole.GUEST,
     )
+    profile_picture = models.ImageField(
+        upload_to='profile_pictures/',
+        blank=True,
+        null=True,
+        help_text='User profile picture'
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

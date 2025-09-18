@@ -140,6 +140,10 @@ USE_TZ = True
 STATIC_URL = "/api/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
+# Media files (User uploaded content)
+MEDIA_URL = "/api/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 AUTH_USER_MODEL = "users.User"
 
 # Default primary key field type
