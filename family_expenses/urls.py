@@ -12,5 +12,7 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
+    # Only serve static files, NOT media files
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # Remove this line to block direct media access:
+    # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
