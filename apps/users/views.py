@@ -22,6 +22,14 @@ class UserDetailView(generics.RetrieveAPIView):
     def get_object(self):
         return self.request.user
 
+class UserUpdateView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_object(self):
+        return self.request.user
+
 class ProfilePictureView(generics.RetrieveAPIView):
     """
     Serve profile pictures only to the owner
@@ -46,10 +54,21 @@ class ProfilePictureView(generics.RetrieveAPIView):
             if not content_type:
                 content_type = 'image/jpeg'  # Default fallback
             
+            # Get file modification time for ETag
+            mtime = os.path.getmtime(file_path)
+            etag = f'"{int(mtime)}"'
+            
+            # Check if client has the current version
+            if_none_match = request.META.get('HTTP_IF_NONE_MATCH')
+            if if_none_match == etag:
+                return HttpResponse(status=304)  # Not Modified
+            
             with open(file_path, 'rb') as f:
                 response = HttpResponse(f.read(), content_type=content_type)
-                # Add cache headers for better performance
-                response['Cache-Control'] = 'private, max-age=3600'
+                # Set cache headers to prevent stale cache
+                response['ETag'] = etag
+                response['Cache-Control'] = 'private, must-revalidate, max-age=0'
+                response['Last-Modified'] = mtime
                 return response
         else:
             raise Http404("Profile picture file not found")
